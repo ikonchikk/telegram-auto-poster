@@ -31,7 +31,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Форс-публикация по кнопке
+      # 🔹 Прямая проверка доступа бота к каналу (диагностика)
+      - name: Telegram getChat (diagnostics)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set -e
+          echo "Checking getChat for $TELEGRAM_CHAT_ID"
+          curl -s "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getChat?chat_id=${TELEGRAM_CHAT_ID}" | tee getchat.json
+          echo
+          echo "Response saved to getchat.json"
+
+      # 🔹 Форс-пост по кнопке
       - name: Run bot (forced)
         if: ${{ inputs.force == true }}
         env:
@@ -40,7 +52,7 @@ jobs:
           CHANNEL_HANDLE: ${{ secrets.CHANNEL_HANDLE }}
         run: python bot.py --force
 
-      # Обычный режим по крону
+      # 🔹 Обычный режим по крону
       - name: Run bot (scheduled)
         if: ${{ inputs.force != true }}
         env:
