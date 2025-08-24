@@ -2,7 +2,7 @@ name: Telegram Auto Poster
 
 on:
   schedule:
-    - cron: '*/5 * * * *'   # каждые 5 минут (UTC), внутри скрипт постит только в 08:00, 14:30, 17:45 по Киеву
+    - cron: '*/5 * * * *'   # каждые 5 минут (UTC); сам бот постит только в 08:00, 14:30, 17:45 по Киеву
   workflow_dispatch:
     inputs:
       force:
